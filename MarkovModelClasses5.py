@@ -1,18 +1,16 @@
-import numpy as np
-
 import SimPy.Markov as Markov
 import SimPy.Plots.SamplePaths as Path
-from InputDataNoTreatment import CKDStates
+from AtrFibInputData import HealthStates
 
 
 class Patient:
-    def __init__(self, id, transition_prob_matrix_one):
+    def __init__(self, id, transition_prob_matrix):
         """ initiates a patient
         :param id: ID of the patient
         :param transition_prob_matrix: transition probability matrix
         """
         self.id = id
-        self.transProbMatrix = transition_prob_matrix_one
+        self.transProbMatrix = transition_prob_matrix
         self.stateMonitor = PatientStateMonitor()
 
     def simulate(self, n_time_steps):
@@ -35,7 +33,7 @@ class Patient:
                 rng=rng)
 
             # update health state
-            self.stateMonitor.update(time_step=k, new_state=CKDStates(new_state_index))
+            self.stateMonitor.update(time_step=k, new_state=HealthStates(new_state_index))
 
             # increment time
             k += 1
@@ -45,9 +43,9 @@ class PatientStateMonitor:
     """ to update patient outcomes (years survived, cost, etc.) throughout the simulation """
     def __init__(self):
 
-        self.currentState = CKDStates.STAGE1    # current health state
-        self.survivalTime = None                # survival time
-
+        self.currentState = HealthStates.WELL    # current health state
+        self.survivalTime = None                 # survival time
+        self.timeToPostStroke = None             # time to post-stroke
 
     def update(self, time_step, new_state):
         """
@@ -57,24 +55,26 @@ class PatientStateMonitor:
         """
 
         # update survival time
-        if new_state == CKDStates.STAGE5:
+        if new_state == HealthStates.DEATH:
             self.survivalTime = time_step + 0.5  # corrected for the half-cycle effect
 
-
+        # update time until death
+        if self.currentState != HealthStates.POST_STROKE and new_state == HealthStates.POST_STROKE:
+            self.timeToPostStroke = time_step + 0.5  # corrected for the half-cycle effect
 
         # update current health state
         self.currentState = new_state
 
     def get_if_alive(self):
         """ returns true if the patient is still alive """
-        if self.currentState != CKDStates.STAGE5:
+        if self.currentState != HealthStates.DEATH:
             return True
         else:
             return False
 
 
 class Cohort:
-    def __init__(self, id, pop_size, transition_prob_matrix_one):
+    def __init__(self, id, pop_size, transition_prob_matrix):
         """ create a cohort of patients
         :param id: cohort ID
         :param pop_size: population size of this cohort
@@ -82,7 +82,7 @@ class Cohort:
         """
         self.id = id
         self.popSize = pop_size
-        self.transitionProbMatrix = transition_prob_matrix_one
+        self.transitionProbMatrix = transition_prob_matrix
         self.cohortOutcomes = CohortOutcomes()  # outcomes of this simulated cohort
 
     def simulate(self, n_time_steps):
@@ -93,7 +93,7 @@ class Cohort:
         for i in range(self.popSize):
             # create a new patient (use id * pop_size + n as patient id)
             patient = Patient(id=self.id * self.popSize + i,
-                              transition_prob_matrix_one=self.transitionProbMatrix)
+                              transition_prob_matrix=self.transitionProbMatrix)
             # simulate
             patient.simulate(n_time_steps)
 
@@ -108,7 +108,9 @@ class CohortOutcomes:
     def __init__(self):
 
         self.survivalTimes = []             # patients' survival times
+        self.timesToPostStroke = []         # patients' times to post stroke
         self.meanSurvivalTime = None        # mean survival times
+        self.meanTimeToPostStroke = None    # mean time to post stroke
         self.nLivingPatients = None         # survival curve (sample path of number of alive patients over time)
 
     def extract_outcome(self, simulated_patient):
@@ -118,8 +120,8 @@ class CohortOutcomes:
         # record survival time and time until post stroke health state
         if simulated_patient.stateMonitor.survivalTime is not None:
             self.survivalTimes.append(simulated_patient.stateMonitor.survivalTime)
-        # if simulated_patient.stateMonitor.timeToStage5 is not None:
-        #     self.timesToStage5.append(simulated_patient.stateMonitor.timeToPostStroke)
+        if simulated_patient.stateMonitor.timeToPostStroke is not None:
+            self.timesToPostStroke.append(simulated_patient.stateMonitor.timeToPostStroke)
 
     def calculate_cohort_outcomes(self, initial_pop_size):
         """ calculates the cohort outcomes
@@ -128,7 +130,8 @@ class CohortOutcomes:
 
         # calculate mean survival time
         self.meanSurvivalTime = sum(self.survivalTimes) / len(self.survivalTimes)
-
+        # calculate mean time to Post Stroke
+        self.meanTimeToPostStroke = sum(self.timesToPostStroke)/len(self.timesToPostStroke)
 
         # survival curve
         self.nLivingPatients = Path.PrevalencePathBatchUpdate(

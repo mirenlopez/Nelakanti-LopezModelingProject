@@ -1,4 +1,4 @@
-import InputData as D
+import InputDataNoTreatment as D
 import SimPy.Plots.Histogram as Hist
 import SimPy.Plots.SamplePaths as Path
 from MarkovModelClasses import Cohort
@@ -6,10 +6,10 @@ from MarkovModelClasses import Cohort
 # create a cohort
 myCohort = Cohort(id=1,
                   pop_size=D.POP_SIZE,
-                  transition_prob_matrix=D.trans_prob_matrix)
+                  transition_prob_matrix_one=D.trans_prob_matrix_five)
 
 # simulate the cohort over the specified time steps
-myCohort.simulate(n_time_steps=D.SIM_TIME_STEPS)
+myCohort.simulate(n_time_steps=100)
 
 # plot the sample path (survival curve)
 Path.plot_sample_path(
@@ -29,6 +29,6 @@ Hist.plot_histogram(
 # print the patient survival time
 print('Mean survival time (years):',
       myCohort.cohortOutcomes.meanSurvivalTime)
-# # print mean time to Post Stroke
-print('Mean time until Post Stoke (years)',
-       myCohort.cohortOutcomes.meanTimeToPostStroke)
+# # # print mean time to Post Stroke
+# print('Mean time until Post Stoke (years)',
+#        myCohort.cohortOutcomes.meanTimeToPostStroke)
