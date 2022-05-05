@@ -6,10 +6,10 @@ from MarkovModelClasses import Cohort
 # create a cohort
 myCohort = Cohort(id=1,
                   pop_size=D.POP_SIZE,
-                  transition_prob_matrix_one=D.trans_prob_matrix_five)
+                  transition_prob_matrix_one=D.trans_prob_matrix_one)
 
 # simulate the cohort over the specified time steps
-myCohort.simulate(n_time_steps=100)
+myCohort.simulate(n_time_steps=500)
 
 # plot the sample path (survival curve)
 Path.plot_sample_path(

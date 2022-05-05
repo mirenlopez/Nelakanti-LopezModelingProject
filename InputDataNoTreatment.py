@@ -3,6 +3,9 @@ from enum import Enum
 # simulation settings
 POP_SIZE = 2000         # cohort population size
 SIM_TIME_STEPS = 10    # length of simulation (years)
+RAMPIRIL_COST = 7313   # yearly cost of rampiril
+Discount = 0.03
+
 
 class CKDStates(Enum):
     """ CKD stages of patients """
@@ -37,4 +40,20 @@ trans_prob_matrix_ten = [
     [0,         0,       0.317,   0.0802,  0.6028],    # Stage 3
     [0,         0,         0,     0.0036,  0.9964],    # Stage 4
     [0,         0,         0,        0,       1]      # Stage 5
+    ]
+
+ANNUAL_STATE_UTILITY = [
+    0.67,
+    0.67,
+    0.67,
+    0.55,
+    0
+    ]
+
+ANNUAL_STATE_COST = [
+    12340,
+    18335,
+    24458,
+    42531,
+    0
     ]
