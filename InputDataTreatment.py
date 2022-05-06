@@ -5,7 +5,7 @@ POP_SIZE = 2000         # cohort population size
 SIM_TIME_STEPS = 10    # length of simulation (years)
 RAMPIRIL_COST = 7313   # yearly cost of rampiril
 Discount = 0.03
-ALPHA = 0.5
+ALPHA = 0.05
 
 class CKDStates(Enum):
     """ CKD stages of patients """

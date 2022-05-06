@@ -19,7 +19,7 @@ Therapy = Cls.Cohort(id=1,
                       pop_size=DataT.POP_SIZE,
                       parameters=P.Parameters(therapy=therapy), transition_prob_matrix_one=DataT.trans_prob_matrix_one)
 
-Therapy.simulate(n_time_steps=500)
+Therapy.simulate(n_time_steps=20)
 
 Support.print_outcomes(sim_outcomes=Therapy.cohortOutcomes, therapy_name=P.Therapies.RAMPIRIL)
 
@@ -30,7 +30,7 @@ NoTherapy = Cls.Cohort(id=1,
                       pop_size=DataNT.POP_SIZE,
                       parameters=P.Parameters(therapy=none), transition_prob_matrix_one=DataNT.trans_prob_matrix_one)
 
-NoTherapy.simulate(n_time_steps=500)
+NoTherapy.simulate(n_time_steps=20)
 
 Support.print_outcomes(sim_outcomes=NoTherapy.cohortOutcomes, therapy_name=P.Therapies.NONE)
 
