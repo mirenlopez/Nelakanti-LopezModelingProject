@@ -119,6 +119,8 @@ class PatientCostUtilityMonitor:
 
 
 
+
+
 class Cohort:
     def __init__(self, id, pop_size, transition_prob_matrix_one, parameters):
         """ create a cohort of patients

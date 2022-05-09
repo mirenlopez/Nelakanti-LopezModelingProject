@@ -14,6 +14,7 @@ import Support as Support
 therapy = P.Therapies.RAMPIRIL
 none = P.Therapies.NONE
 
+print('therapy cohort')
 #  therapy cohort
 Therapy = Cls.Cohort(id=1,
                       pop_size=DataT.POP_SIZE,
@@ -23,8 +24,7 @@ Therapy.simulate(n_time_steps=20)
 
 Support.print_outcomes(sim_outcomes=Therapy.cohortOutcomes, therapy_name=P.Therapies.RAMPIRIL)
 
-# Support.print_outcomes(sim_outcomes=Therapy.cohortOutcomes, therapy_name=therapy)
-
+print ('no therapy cohort')
 # no therapy cohort
 NoTherapy = Cls.Cohort(id=1,
                       pop_size=DataNT.POP_SIZE,

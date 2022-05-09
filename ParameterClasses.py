@@ -43,8 +43,8 @@ class Parameters:
             self.probMatrix = DataT.trans_prob_matrix_one
 
         # annual state costs and utilities
-        self.annualStateCosts = DataNT.ANNUAL_STATE_COST
-        self.annualStateUtilities = DataNT.ANNUAL_STATE_UTILITY
+        self.annualStateCosts = DataT.ANNUAL_STATE_COST
+        self.annualStateUtilities = DataT.ANNUAL_STATE_UTILITY
 
         # discount rate
         self.discountRate = DataT.Discount
