@@ -43,10 +43,10 @@ trans_prob_matrix_ten = [
     ]
 
 ANNUAL_STATE_UTILITY = [
-    85.9,
-    85.4,
-    74.9,
-    63.4,
+    .859,
+    .854,
+    .749,
+    .634,
     0
     ]
 

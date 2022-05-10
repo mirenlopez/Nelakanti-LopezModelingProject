@@ -208,3 +208,4 @@ def report_CEA_CBA(sim_outcomes_none, sim_outcomes_anticoag):
         figure_size=(6, 5)
     )
 
+
