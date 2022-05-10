@@ -1,7 +1,8 @@
 import InputDataNoTreatment as D
 import SimPy.Plots.Histogram as Hist
 import SimPy.Plots.SamplePaths as Path
-from MarkovModelClasses import Cohort
+from MarkovModelClassesNoTreatment import Cohort
+
 
 # create a cohort
 myCohort = Cohort(id=1,
