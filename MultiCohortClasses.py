@@ -1,7 +1,7 @@
 import numpy as np
 
 import SimPy.Statistics as Stat
-from MarkovModelClasses import Cohort
+from MarkovModelClassesMultiCohorts import Cohort
 from NealClasses import ParameterGenerator
 
 import InputDataNoTreatment as DataNT
